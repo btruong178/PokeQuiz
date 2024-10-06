@@ -1,0 +1,39 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+  animation: backgroundAnimation 10s infinite alternate;
+}
+
+.section:nth-child(odd) {
+  background: #ff9999; /* Light red */
+}
+
+.section:nth-child(even) {
+  background: #99ccff; /* Light blue */
+}
+
+@keyframes backgroundAnimation {
+  0% {
+    background-color: #ff9999; /* Light red */
+  }
+  100% {
+    background-color: #99ccff; /* Light blue */
+  }
+}
