@@ -1,19 +1,24 @@
+// Library imports
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+// Component imports
 import Homepage from './homepage';
 import About from './about';
-import AnimatedComponent from './animatedcomponent';
-import SmoothScrollComponent from './smoothscrolling';
+import { Header } from './header';
+import { Footer } from './footer';
 
 function App() {
   return (
+    
     <>
-      <Routes>
+      <Header />
+      <main>
+        <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/About" element={<About />} />
-          <Route path="/AnimatedComponent" element={<AnimatedComponent />} />
-          <Route path="/SmoothScrollComponent" element={<SmoothScrollComponent />} />
-      </Routes>
+        </Routes>
+      </main>
+      <Footer />
     </>
   );
 }
