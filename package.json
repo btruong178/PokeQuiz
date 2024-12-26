@@ -19,15 +19,18 @@
     "url": "git+https://github.com/btruong178/Full-Stack.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Brian Truong",
+    "email": "briantruong178@gmail.com",
+    "url": "https://github.com/btruong178"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/btruong178/Full-Stack/issues"
   },
   "homepage": "https://github.com/btruong178/Full-Stack#readme",
   "dependencies": {
-    "concurrently": "^9.0.1",
-    "pg": "^8.13.1"
+    "concurrently": "^9.0.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
