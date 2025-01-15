@@ -33,14 +33,17 @@ const fetchPokemonData = async (pokemonID) => {
     return { pokemonName, pokemonTypes };
 };
 
-const testPokeAPI = async () => {
+const addToDataBase = async () => {
     try {
-        const pokemonID = Math.floor(Math.random() * 1025) + 1;
-        const { pokemonName, pokemonTypes } = await fetchPokemonData(pokemonID);
+        for (let i = 1; i <= 1025; i++) {
+            const { pokemonName, pokemonTypes } = await fetchPokemonData(i);
+            const newPokemon = await pool.query('INSERT INTO pokemon (name, type) VALUES ($1, $2) RETURNING *', [pokemonName, pokemonTypes]);
+            console.log(newPokemon.rows[0]);
+        }
     } catch (error) {
         logError(error);
     }
 };
 
-testPokeAPI();
+addToDataBase();
 
