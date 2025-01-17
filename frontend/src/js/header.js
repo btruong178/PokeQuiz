@@ -1,20 +1,24 @@
 import '../css/Header.css';
 import { Link } from "react-router-dom";
-export function Header() {
-    return (
-        <header>
-            <h1>My React App</h1>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Homepage</Link>
-                    </li>
-                    <li>
-                        <Link to="/About">About</Link>
-                    </li>
-                </ul>
+import { useState } from "react";
+import SidePanel from './sidepanel';
+import { FaBars } from 'react-icons/fa';
 
-            </nav>
-        </header>
+export function Header() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleSidePanel = () => {
+        setIsOpen(!isOpen);
+    }
+
+    return (
+        <>
+            <header>
+                <h1>
+                    <FaBars onClick={toggleSidePanel} style={{ cursor: 'pointer' }} />
+                </h1>
+            </header>
+            <SidePanel isOpen={isOpen} toggleSidePanel={toggleSidePanel} />
+        </>
     )
 }
