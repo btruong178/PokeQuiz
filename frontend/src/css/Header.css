@@ -1,35 +1,47 @@
-
-header {
-  background: #333;
+.header {
+  background: #854242;
   color: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 10px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header h1 {
-  font-size: 2em;
-}
-
-nav ul {
-  list-style: none;
+.header-left {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-nav ul li {
-  margin: 0 20px;
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-nav ul li a {
-  color: #fff;
+
+.header-title {
   text-decoration: none;
-  font-size: 1.2em;
-  transition: color 0.3s;
+  font-size: 2rem;
+  font-family: Verdana;
+  color: #fff
 }
 
-nav ul li a:hover {
-  color: #ff9999;
+.FaBars {
+  margin: 0px 15px 0px 15px;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.FaBook {
+  margin: 0px 15px 5px 15px;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.FaCog {
+  margin: 0px 15px 5px 15px;
+  cursor: pointer;
+  font-size: 2rem;
 }

@@ -1,12 +1,15 @@
 import pkg from 'pg';
 const { Pool } = pkg;
-import dotenv from 'dotenv';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import path from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+import dotenv from 'dotenv';
+
+dotenv.config({ path: "../.env" });
+
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_NAME:', process.env.DB_NAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_PORT:', process.env.DB_PORT);
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -16,5 +19,13 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
+// Check if the database connection is established
+pool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+        console.error('Database connection error:', err.stack);
+    } else {
+        console.log('DB Connection Established:', res.rows[0]);
+    }
+});
 
 export default pool;

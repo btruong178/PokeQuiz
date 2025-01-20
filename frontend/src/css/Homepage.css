@@ -1,3 +1,29 @@
 .full-height {
   height: 100%;
 }
+
+.welcome {
+  font-size: 5rem;
+}
+
+.introduction {
+  font-size: 1rem;
+  margin: 5rem;
+  max-width: 30%;
+}
+
+.rounded {
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  padding: 3rem;
+}
+
+.hr-line {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.pokeball {
+  width: 70px;
+  height: 70px;
+}

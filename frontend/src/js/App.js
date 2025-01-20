@@ -6,10 +6,12 @@ import Homepage from './homepage';
 import About from './about';
 import { Header } from './header';
 import { Footer } from './footer';
+// CSS imports
+import '../css/App.css';
 
 function App() {
   return (
-    
+
     <>
       <Header />
       <main>

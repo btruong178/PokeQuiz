@@ -3,7 +3,7 @@ import pool from '../db.js';
 const router = express.Router();
 
 
-router.get('/', async (req, res) => {
+router.get('/check', async (req, res) => {
     try {
         const result = await pool.query('SELECT NOW()');
         res.json({ message: 'API is Working!', time: result.rows[0] });
