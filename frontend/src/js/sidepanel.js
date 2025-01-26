@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import '../css/SidePanel.css';
 import { Link } from "react-router-dom";
-import { FaHome, FaQuestionCircle } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle, FaBrain } from 'react-icons/fa';
+
 
 function SidePanel({ isOpen, toggleSidePanel }) {
     useEffect(() => {
@@ -31,12 +32,20 @@ function SidePanel({ isOpen, toggleSidePanel }) {
             <ul>
                 <li>
                     <Link to="/" onClick={toggleSidePanel}>
-                        <FaHome className="fa-icon"></FaHome>Home
+                        <FaHome className="fa-icon"></FaHome>
+                        Home
                     </Link>
                 </li>
                 <li>
                     <Link to="/About" onClick={toggleSidePanel}>
-                        <FaQuestionCircle className="fa-icon"></FaQuestionCircle>About
+                        <FaQuestionCircle className="fa-icon"></FaQuestionCircle>
+                        About
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/TypeQuiz" onClick={toggleSidePanel}>
+                        <FaBrain className="fa-icon"></FaBrain>
+                        Type Quiz
                     </Link>
                 </li>
             </ul>

@@ -11,6 +11,7 @@ export function Header() {
         setIsOpen(!isOpen);
     }
 
+
     return (
         <>
             <header className="header">
