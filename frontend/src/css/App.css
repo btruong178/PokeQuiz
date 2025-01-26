@@ -1,15 +1,21 @@
+html {
+  height: 100%;
+}
+
 main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: black;
   color: white;
+  
 }
 
 .content {
   padding-top: 80px;
   height: 100vh;
   box-sizing: border-box;
+  
 }
 
 

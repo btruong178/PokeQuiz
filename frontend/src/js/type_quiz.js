@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import '../css/type_quiz.css'
 
 function type_quiz() {

@@ -2,7 +2,6 @@
 
 # Ignore environment variables
 .env
-.env.*   # ignores .env.local, .env.development, etc.
 backend/.env
 frontend/.env
 
