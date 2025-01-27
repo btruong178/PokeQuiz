@@ -16,13 +16,11 @@ function App() {
     <>
       <main>
         <Header />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/TypeQuiz" element={<TypeQuiz />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/TypeQuiz" element={<TypeQuiz />} />
+        </Routes>
       </main>
     </>
   );

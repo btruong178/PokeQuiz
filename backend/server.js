@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import apiroutes from './routes/api.js';
+import pokemonroutes from './routes/pokemon.js';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-console.log('ENV Variables Test:', process.env); // Log environment variables
 
 const app = express();
 app.use(cors());
@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', apiroutes);
+app.use('/pokemon', pokemonroutes);
 
 const port = process.env.PORT;
 
