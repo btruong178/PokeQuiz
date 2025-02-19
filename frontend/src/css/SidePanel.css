@@ -43,6 +43,7 @@
 .side-panel ul {
     list-style: none;
     padding: 0px;
+    overflow-y: auto;
 }
 
 .side-panel ul li {
