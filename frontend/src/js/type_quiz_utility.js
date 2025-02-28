@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/type_quiz.css';
 
 const capitalizePokemonStrings = (str) => {
@@ -19,22 +19,25 @@ const availableTypes = [
     'Rock', 'Ghost', 'Dragon', 'Dark', 'Steel', 'Fairy'
 ];
 
-const availableDamage = ['quadrupleTo', 'quadrupleFrom', 'doubleTo', 'doubleFrom', 'halfTo', 'halfFrom', 'noDamageTo', 'noDamageFrom'];
 
-function Types({ onTypeSelect }) {
+function Types({ onTypeSelect, damageSelections, currentDamage }) {
     const [selectedTypes, setSelectedTypes] = useState([]);
+
+    useEffect(() => {
+        setSelectedTypes(damageSelections[currentDamage] || []);
+    }, [damageSelections, currentDamage]);
 
     const handleButtonClick = (type) => {
         let newSelectedTypes;
-        if (selectedTypes.includes(type)) {
-            // Remove type if already selected
-            newSelectedTypes = selectedTypes.filter(t => t !== type);
+        if (damageSelections[currentDamage].includes(type)) {
+            newSelectedTypes = damageSelections[currentDamage].filter(t => t !== type);
+
         } else {
-            // Add type if not selected
-            newSelectedTypes = [...selectedTypes, type];
+            newSelectedTypes = [...damageSelections[currentDamage], type];
         }
+        damageSelections[currentDamage] = newSelectedTypes;
         setSelectedTypes(newSelectedTypes);
-        onTypeSelect(newSelectedTypes);
+        onTypeSelect(damageSelections);
     };
 
     return (
@@ -59,8 +62,10 @@ function DamageSelector({ onDamageSelect }) {
     const [damage, setDamage] = useState('doubleTo');
 
     const handleDamageChange = (event) => {
-        setDamage(event.target.value);
-        onDamageSelect(event.target.value);
+        const previousDamage = damage;
+        const newDamage = event.target.value;
+        setDamage(newDamage);
+        onDamageSelect({ previousDamage, newDamage });
     };
 
     return (
@@ -71,11 +76,20 @@ function DamageSelector({ onDamageSelect }) {
                     <label>
                         <input
                             type="radio"
-                            value="quadrupleTo"
-                            checked={damage === 'quadrupleTo'}
+                            value="noDamageTo"
+                            checked={damage === 'noDamageTo'}
                             onChange={handleDamageChange}
                         />
-                        <span>4x</span>
+                        <span>0x</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="halfTo"
+                            checked={damage === 'halfTo'}
+                            onChange={handleDamageChange}
+                        />
+                        <span>0.5x</span>
                     </label>
                     <label>
                         <input
@@ -89,20 +103,11 @@ function DamageSelector({ onDamageSelect }) {
                     <label>
                         <input
                             type="radio"
-                            value="halfTo"
-                            checked={damage === 'halfTo'}
+                            value="quadrupleTo"
+                            checked={damage === 'quadrupleTo'}
                             onChange={handleDamageChange}
                         />
-                        <span>0.5</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="noDamageTo"
-                            checked={damage === 'noDamageTo'}
-                            onChange={handleDamageChange}
-                        />
-                        <span>0x</span>
+                        <span>4x</span>
                     </label>
                 </div>
             </div>
@@ -112,11 +117,20 @@ function DamageSelector({ onDamageSelect }) {
                     <label>
                         <input
                             type="radio"
-                            value="quadrupleFrom"
-                            checked={damage === 'quadrupleFrom'}
+                            value="noDamageFrom"
+                            checked={damage === 'noDamageFrom'}
                             onChange={handleDamageChange}
                         />
-                        <span>4x</span>
+                        <span>0x</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="halfFrom"
+                            checked={damage === 'halfFrom'}
+                            onChange={handleDamageChange}
+                        />
+                        <span>0.5x</span>
                     </label>
                     <label>
                         <input
@@ -130,20 +144,11 @@ function DamageSelector({ onDamageSelect }) {
                     <label>
                         <input
                             type="radio"
-                            value="halfFrom"
-                            checked={damage === 'halfFrom'}
+                            value="quadrupleFrom"
+                            checked={damage === 'quadrupleFrom'}
                             onChange={handleDamageChange}
                         />
-                        <span>0.5</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="noDamageFrom"
-                            checked={damage === 'noDamageFrom'}
-                            onChange={handleDamageChange}
-                        />
-                        <span>0x</span>
+                        <span>4x</span>
                     </label>
                 </div>
             </div>

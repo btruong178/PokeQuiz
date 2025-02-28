@@ -50,6 +50,16 @@
     flex: 1;
 }
 
+.damage-outgoing {
+    background-color: orange;
+    padding: 10px;
+}
+
+.damage-incoming {
+    background-color: brown;
+    padding: 10px;
+}
+
 .whole-page {
     min-height: calc(100vh - 80px);
     width: 100%;
@@ -72,23 +82,6 @@
     flex: 1;
 }
 
-.pokemon-damage-selector {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    height: 100%;
-    width: 100%;
-    background-color: aqua;
-    padding: 10px 0;
-    flex: 1;
-}
-
-@media (max-width: 1000px) {
-    .pokemon-damage-selector {
-        grid-template-columns: 1fr;
-    }
-}
 
 
 .pokemon {
@@ -127,9 +120,9 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    align-content: center;
     background-color: yellow;
     padding: 10px;
 }
@@ -150,7 +143,7 @@
     color: #fff;
     font-size: 1rem;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 5px 10px;
 }
 
 .radio-group label span {
@@ -161,7 +154,6 @@
 
 .radio-group label:has(input[type="radio"]:checked) {
     background-color: #0a2d47;
-    border: 3px solid #0a2d47;
 }
 
 
@@ -217,7 +209,7 @@
     }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 350px) {
     .button-group {
         grid-template-columns: 1fr 1fr;
     }

@@ -33,6 +33,13 @@ const fetchPokemonData = async (pokemonID) => {
     return { pokemonName, pokemonTypes };
 };
 
+// Check if the database connection is established function
+const checkDBConnection = () => {
+    console.log('Pool Credentials:', pool.options);
+}
+
+
+
 const addToDataBase = async () => {
     try {
         for (let i = 1; i <= 1025; i++) {
@@ -45,5 +52,14 @@ const addToDataBase = async () => {
     }
 };
 
-addToDataBase();
+
+// addToDataBase();
+checkDBConnection();
+
+
+// https://pokeapi.co/api/v2/pokemon =  id, name, type(https://pokeapi.co/api/v2/type), image,
+//                                      cries, height, weight, abilities, species(https://pokeapi.co/api/v2/pokemon-species)
+// https://pokeapi.co/api/v2/pokemon-species = flavor_text_entries, generation("https://pokeapi.co/api/v2/generation")
+// https://pokeapi.co/api/v2/generation = main_region
+// https://pokeapi.co/api/v2/type = damage_relations
 

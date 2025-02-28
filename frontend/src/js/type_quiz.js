@@ -7,26 +7,30 @@ const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
 
 function TypeQuiz() {
     const [pokemon, setPokemon] = useState(null);
-    // User selected type advantage and weakness data
-    const [doubleDamageToSelection, setDoubleDamageToSelection] = useState([]);
-    const [doubleDamageFromSelection, setDoubleDamageFromSelection] = useState([]);
-
-    const [halfDamageToSelection, setHalfDamageToSelection] = useState([]);
-    const [halfDamageFromSelection, setHalfDamageFromSelection] = useState([]);
-
-    const [noDamageToSelection, setNoDamageToSelection] = useState([]);
-    const [noDamageFromSelection, setNoDamageFromSelection] = useState([]);
-
+    const [damage, setDamage] = useState('doubleTo');
+    const [damageSelections, setDamageSelections] = useState({
+        quadrupleTo: [],
+        quadrupleFrom: [],
+        doubleTo: [],
+        doubleFrom: [],
+        halfTo: [],
+        halfFrom: [],
+        noDamageTo: [],
+        noDamageFrom: [],
+    });
     // Correct type advantage and weakness data
-    const [correctDoubleDamageTo, setCorrectDoubleDamageTo] = useState([]);
-    const [correctDoubleDamageFrom, setCorrectDoubleDamageFrom] = useState([]);
-
-    const [correctHalfDamageTo, setCorrectHalfDamageTo] = useState([]);
-    const [correctHalfDamageFrom, setCorrectHalfDamageFrom] = useState([]);
-
-    const [correctNoDamageTo, setCorrectNoDamageTo] = useState([]);
-    const [correctNoDamageFrom, setCorrectNoDamageFrom] = useState([]);
-
+    const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState(
+        {
+            quadrupleTo: [],
+            quadrupleFrom: [],
+            doubleTo: [],
+            doubleFrom: [],
+            halfTo: [],
+            halfFrom: [],
+            noDamageTo: [],
+            noDamageFrom: [],
+        }
+    );
 
     // Fetch random Pokémon
     useEffect(() => {
@@ -41,18 +45,23 @@ function TypeQuiz() {
 
         fetchRandomPokemon();
     }, []);
-    // Logging user selected type advantage and weakness data
-    useEffect(() => {
-        console.log("Updated Double Damage To:", doubleDamageToSelection);
-    }, [doubleDamageToSelection]);
-
     // Functions to update user selected type advantage and weakness data
-    const updateSelection = (newSelectedTypes) => {
-        setDoubleDamageToSelection(newSelectedTypes);
-        // When user selects a type, check what damage is toggled to set that type to the right category
-        // e.g, double damage to, double damage from, half damage to, half damage from, no damage to, no damage from
+    const updateTypeSelection = (damageSelections) => {
+        console.log("Updating Type Selections Activated!");
+        setDamageSelections(damageSelections);
+        console.log("New Type Selections: ", damageSelections);
+        // New idea: Use a Dictionary to store the selected types for each damage category
+        // When a user selects a damage, check the array and set the types that correspond to that damage
+        // If the user selects a type that is already in the array, remove it
+        // If the user selects a type that is not in the array, add it
+        // When the user submits the quiz, compare the selected types to the correct types
     }
 
+    const updateDamageSelection = ({ previousDamage, newDamage }) => {
+        console.log("Updating Damage Selection Activated!");
+        console.log("Setting Damage to:", newDamage);
+        setDamage(newDamage);
+    }
 
 
     return (
@@ -67,8 +76,8 @@ function TypeQuiz() {
                     </div>
                 </div>
                 <div className="typesanddamage">
-                    <Types onTypeSelect={updateSelection}></Types>
-                    <DamageSelector onDamageSelect={updateSelection}></DamageSelector>
+                    <Types onTypeSelect={updateTypeSelection} damageSelections={damageSelections} currentDamage={damage}></Types>
+                    <DamageSelector onDamageSelect={updateDamageSelection}></DamageSelector>
                 </div>
 
             </div>
