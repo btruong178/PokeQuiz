@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import '../css/type_quiz.css';
 
+
+const arrayOfSelectedPokemonTypes = (str) => {
+    try {
+        const splitStr = str.split('/');
+        return splitStr.map((s) => s.charAt(0).toUpperCase() + s.slice(1));
+    } catch (error) {
+        console.error('Error creating arrayOfSelectedPokemonTypes:', error);
+    }
+};
+
 const capitalizePokemonStrings = (str) => {
     try {
         if (str.includes('/')) {
@@ -20,22 +30,22 @@ const availableTypes = [
 ];
 
 
-function Types({ onTypeSelect, damageSelections, currentDamage }) {
+function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
     const [selectedTypes, setSelectedTypes] = useState([]);
 
     useEffect(() => {
-        setSelectedTypes(damageSelections[currentDamage] || []);
-    }, [damageSelections, currentDamage]);
+        setSelectedTypes(damageSelections[currentType][currentDamage] || []);
+    }, [damageSelections, currentDamage, currentType]);
 
     const handleButtonClick = (type) => {
         let newSelectedTypes;
-        if (damageSelections[currentDamage].includes(type)) {
-            newSelectedTypes = damageSelections[currentDamage].filter(t => t !== type);
+        if (damageSelections[currentType][currentDamage].includes(type)) {
+            newSelectedTypes = damageSelections[currentType][currentDamage].filter(t => t !== type);
 
         } else {
-            newSelectedTypes = [...damageSelections[currentDamage], type];
+            newSelectedTypes = [...damageSelections[currentType][currentDamage], type];
         }
-        damageSelections[currentDamage] = newSelectedTypes;
+        damageSelections[currentType][currentDamage] = newSelectedTypes;
         setSelectedTypes(newSelectedTypes);
         onTypeSelect(damageSelections);
     };
@@ -57,6 +67,7 @@ function Types({ onTypeSelect, damageSelections, currentDamage }) {
         </div>
     );
 }
+
 
 function DamageSelector({ onDamageSelect }) {
     const [damage, setDamage] = useState('doubleTo');
@@ -100,15 +111,6 @@ function DamageSelector({ onDamageSelect }) {
                         />
                         <span>2x</span>
                     </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="quadrupleTo"
-                            checked={damage === 'quadrupleTo'}
-                            onChange={handleDamageChange}
-                        />
-                        <span>4x</span>
-                    </label>
                 </div>
             </div>
             <div className="damage-incoming">
@@ -141,19 +143,10 @@ function DamageSelector({ onDamageSelect }) {
                         />
                         <span>2x</span>
                     </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="quadrupleFrom"
-                            checked={damage === 'quadrupleFrom'}
-                            onChange={handleDamageChange}
-                        />
-                        <span>4x</span>
-                    </label>
                 </div>
             </div>
         </div>
     );
 }
 
-export { capitalizePokemonStrings, Types, DamageSelector };
+export { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector };

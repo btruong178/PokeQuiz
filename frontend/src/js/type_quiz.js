@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { capitalizePokemonStrings, Types, DamageSelector } from './type_quiz_utility';
+import { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector } from './type_quiz_utility';
 import '../css/type_quiz.css';
 
 const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
@@ -8,9 +8,8 @@ const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
 function TypeQuiz() {
     const [pokemon, setPokemon] = useState(null);
     const [damage, setDamage] = useState('doubleTo');
+    const [currentType, setCurrentType] = useState(null);
     const [damageSelections, setDamageSelections] = useState({
-        quadrupleTo: [],
-        quadrupleFrom: [],
         doubleTo: [],
         doubleFrom: [],
         halfTo: [],
@@ -19,18 +18,14 @@ function TypeQuiz() {
         noDamageFrom: [],
     });
     // Correct type advantage and weakness data
-    const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState(
-        {
-            quadrupleTo: [],
-            quadrupleFrom: [],
-            doubleTo: [],
-            doubleFrom: [],
-            halfTo: [],
-            halfFrom: [],
-            noDamageTo: [],
-            noDamageFrom: [],
-        }
-    );
+    const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState({
+        doubleTo: [],
+        doubleFrom: [],
+        halfTo: [],
+        halfFrom: [],
+        noDamageTo: [],
+        noDamageFrom: [],
+    });
 
     // Fetch random Pokémon
     useEffect(() => {
@@ -45,6 +40,28 @@ function TypeQuiz() {
 
         fetchRandomPokemon();
     }, []);
+    // Update Damage Selections
+    useEffect(() => {
+        if (pokemon) {
+            const types = arrayOfSelectedPokemonTypes(pokemon.type);
+            const newDamageSelections = {};
+            types.forEach((type) => {
+                newDamageSelections[type] = {
+                    doubleTo: [],
+                    doubleFrom: [],
+                    halfTo: [],
+                    halfFrom: [],
+                    noDamageTo: [],
+                    noDamageFrom: [],
+                };
+            });
+            setDamageSelections(newDamageSelections);
+            setCurrentType(types[0]);
+            console.log("New Damage Selections: ", newDamageSelections);
+            console.log("Current Type: ", types[0]);
+        }
+
+    }, [pokemon]);
     // Functions to update user selected type advantage and weakness data
     const updateTypeSelection = (damageSelections) => {
         console.log("Updating Type Selections Activated!");
@@ -75,8 +92,12 @@ function TypeQuiz() {
                         <p className="">{pokemon ? capitalizePokemonStrings(pokemon.type) : 'Loading...'}</p>
                     </div>
                 </div>
-                <div className="typesanddamage">
-                    <Types onTypeSelect={updateTypeSelection} damageSelections={damageSelections} currentDamage={damage}></Types>
+                <div className="selectors">
+                    <Types onTypeSelect={updateTypeSelection} damageSelections={damageSelections} currentDamage={damage}
+                        currentType={currentType}></Types>
+                    <div className="typeToggle">
+                        <button>hi</button>
+                    </div>
                     <DamageSelector onDamageSelect={updateDamageSelection}></DamageSelector>
                 </div>
 
