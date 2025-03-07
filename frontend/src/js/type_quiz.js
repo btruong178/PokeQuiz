@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector } from './type_quiz_utility';
+import { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector, TypeToggle } from './type_quiz_utility';
 import '../css/type_quiz.css';
 
 const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
@@ -8,15 +8,9 @@ const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
 function TypeQuiz() {
     const [pokemon, setPokemon] = useState(null);
     const [damage, setDamage] = useState('doubleTo');
+    const [types, setTypes] = useState([]);
     const [currentType, setCurrentType] = useState(null);
-    const [damageSelections, setDamageSelections] = useState({
-        doubleTo: [],
-        doubleFrom: [],
-        halfTo: [],
-        halfFrom: [],
-        noDamageTo: [],
-        noDamageFrom: [],
-    });
+    const [damageSelections, setDamageSelections] = useState({});
     // Correct type advantage and weakness data
     const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState({
         doubleTo: [],
@@ -37,47 +31,50 @@ function TypeQuiz() {
                 console.error('Error fetching random Pokémon:', error);
             }
         };
-
         fetchRandomPokemon();
     }, []);
-    // Update Damage Selections
+    // Initialize
     useEffect(() => {
         if (pokemon) {
-            const types = arrayOfSelectedPokemonTypes(pokemon.type);
-            const newDamageSelections = {};
-            types.forEach((type) => {
-                newDamageSelections[type] = {
-                    doubleTo: [],
-                    doubleFrom: [],
-                    halfTo: [],
-                    halfFrom: [],
-                    noDamageTo: [],
-                    noDamageFrom: [],
-                };
-            });
-            setDamageSelections(newDamageSelections);
-            setCurrentType(types[0]);
-            console.log("New Damage Selections: ", newDamageSelections);
-            console.log("Current Type: ", types[0]);
+            const newTypes = arrayOfSelectedPokemonTypes(pokemon.type);
+            setTypes(newTypes);
+            setCurrentType(newTypes[0]);
+            console.log("UseEffect => New Types: ", newTypes);
+            console.log("UseEffect => Current Type: ", newTypes[0]);
+            if (newTypes.length > 0) {
+                const newDamageSelections = {};
+                newTypes.forEach((type) => {
+                    newDamageSelections[type] = {
+                        doubleTo: [],
+                        doubleFrom: [],
+                        halfTo: [],
+                        halfFrom: [],
+                        noDamageTo: [],
+                        noDamageFrom: [],
+                    };
+                });
+                setDamageSelections(newDamageSelections);
+                console.log("UseEffect => Initial Damage Selections: ", newDamageSelections);
+            }
         }
-
     }, [pokemon]);
     // Functions to update user selected type advantage and weakness data
     const updateTypeSelection = (damageSelections) => {
-        console.log("Updating Type Selections Activated!");
+        console.log("Updating Type Selections");
         setDamageSelections(damageSelections);
         console.log("New Type Selections: ", damageSelections);
-        // New idea: Use a Dictionary to store the selected types for each damage category
-        // When a user selects a damage, check the array and set the types that correspond to that damage
-        // If the user selects a type that is already in the array, remove it
-        // If the user selects a type that is not in the array, add it
-        // When the user submits the quiz, compare the selected types to the correct types
     }
 
     const updateDamageSelection = ({ previousDamage, newDamage }) => {
-        console.log("Updating Damage Selection Activated!");
-        console.log("Setting Damage to:", newDamage);
+        console.log("Update Damage Selection");
         setDamage(newDamage);
+        console.log("New Damage:", newDamage);
+
+    }
+    const updateCurrentType = (type) => {
+        console.log("Updating Current Type");
+        setCurrentType(type);
+        console.log("New Current Type: ", type);
     }
 
 
@@ -93,12 +90,12 @@ function TypeQuiz() {
                     </div>
                 </div>
                 <div className="selectors">
+                    <TypeToggle types={types} currentType={currentType} onTypeToggle={updateCurrentType} ></TypeToggle>
+                    <DamageSelector onDamageSelect={updateDamageSelection}></DamageSelector>
                     <Types onTypeSelect={updateTypeSelection} damageSelections={damageSelections} currentDamage={damage}
                         currentType={currentType}></Types>
-                    <div className="typeToggle">
-                        <button>hi</button>
-                    </div>
-                    <DamageSelector onDamageSelect={updateDamageSelection}></DamageSelector>
+
+
                 </div>
 
             </div>

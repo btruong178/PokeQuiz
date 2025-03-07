@@ -34,7 +34,7 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
     const [selectedTypes, setSelectedTypes] = useState([]);
 
     useEffect(() => {
-        setSelectedTypes(damageSelections[currentType][currentDamage] || []);
+        setSelectedTypes(damageSelections[currentType]?.[currentDamage] || []);
     }, [damageSelections, currentDamage, currentType]);
 
     const handleButtonClick = (type) => {
@@ -43,7 +43,7 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
             newSelectedTypes = damageSelections[currentType][currentDamage].filter(t => t !== type);
 
         } else {
-            newSelectedTypes = [...damageSelections[currentType][currentDamage], type];
+            newSelectedTypes = [...(damageSelections[currentType][currentDamage] || []), type];
         }
         damageSelections[currentType][currentDamage] = newSelectedTypes;
         setSelectedTypes(newSelectedTypes);
@@ -67,7 +67,34 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
         </div>
     );
 }
+function TypeToggle({ types, currentType, onTypeToggle }) {
+    // Use local state for selected type and initialize it with the prop.
+    const [selectedType, setSelectedType] = useState(currentType);
 
+    // Update local state when parent’s currentType changes.
+    useEffect(() => {
+        setSelectedType(currentType);
+    }, [currentType]);
+
+    const handleButtonClick = (type) => {
+        setSelectedType(type);
+        onTypeToggle(type);
+    }
+
+    return (
+        <div className="typeToggle">
+            {types.map((type) => (
+                <button
+                    key={type}
+                    onClick={() => handleButtonClick(type)}
+                    className={selectedType === type ? 'selected' : 'unselected'}
+                >
+                    {type}
+                </button>
+            ))}
+        </div>
+    );
+}
 
 function DamageSelector({ onDamageSelect }) {
     const [damage, setDamage] = useState('doubleTo');
@@ -149,4 +176,4 @@ function DamageSelector({ onDamageSelect }) {
     );
 }
 
-export { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector };
+export { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector, TypeToggle };

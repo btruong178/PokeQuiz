@@ -166,7 +166,7 @@
     padding: 10px;
 }
 
-.typeToggle button {
+.typeToggle .unselected {
     background-color: #0078d4;
     color: #fff;
     border: none;
@@ -178,8 +178,20 @@
     margin: 0 10px;
 }
 
+.typeToggle .selected {
+    background-color: #021524;
+    color: #fff;
+    border: 1px solid #021524;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin: 0 10px;
+}
 
-.selected {
+
+.type-selector .selected {
     background-color: #0a2d47;
     color: #fff;
     border: none;
@@ -191,7 +203,7 @@
     margin: 0 10px;
 }
 
-.unselected {
+.type-selector .unselected {
     background-color: #0078d4;
     color: #fff;
     border: none;
