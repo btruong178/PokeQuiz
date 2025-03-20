@@ -21,10 +21,10 @@ export function Header() {
                         Pokequiz
                     </Link>
                 </div>
-                <div className="header-right">
+                {/* <div className="header-right">
                     <FaBook className="FaBook" title="Homepage Tutorial" />
                     <FaCog className="FaCog" title="Settings" />
-                </div>
+                </div> */}
             </header>
             <SidePanel isOpen={isOpen} toggleSidePanel={toggleSidePanel} />
         </>

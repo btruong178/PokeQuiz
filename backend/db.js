@@ -29,6 +29,7 @@ const pool = new Pool({
 
 // Check if the database connection is established
 pool.query('SELECT NOW()', (err, res) => {
+    console.log("--------------------------------\nFrom db.js\n--------------------------------");
     if (err) {
         console.error('Database connection error(db.js):', err.stack);
         console.error('Pool Data:', poolData());
@@ -36,6 +37,7 @@ pool.query('SELECT NOW()', (err, res) => {
         console.log('DB Connection Established(db.js):', res.rows[0]);
         console.log(poolData());
     }
+    console.log("--------------------------------");
 });
 
 export default pool;
