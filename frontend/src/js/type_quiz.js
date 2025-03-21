@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { arrayOfSelectedPokemonTypes, capitalizePokemonStrings, Types, DamageSelector, TypeToggle } from './type_quiz_utility';
 import '../css/type_quiz.css';
-
+// API endpoint to fetch a random Pokémon
 const randomPokemon = "http://localhost:5000/pokemon/random_pokemon";
-
+// Main component for the type advantage and weakness quiz
 function TypeQuiz() {
     const [pokemon, setPokemon] = useState(null);
     const [damage, setDamage] = useState('doubleTo');
@@ -12,7 +12,7 @@ function TypeQuiz() {
     const [currentType, setCurrentType] = useState(null);
     const [damageSelections, setDamageSelections] = useState({});
     // Correct type advantage and weakness data
-    const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState({
+    const [correctTypeAdvantage1, setCorrectTypeAdvantage1] = useState({
         doubleTo: [],
         doubleFrom: [],
         halfTo: [],
@@ -20,7 +20,14 @@ function TypeQuiz() {
         noDamageTo: [],
         noDamageFrom: [],
     });
-
+    const [correctTypeAdvantage2, setCorrectTypeAdvantage2] = useState({
+        doubleTo: [],
+        doubleFrom: [],
+        halfTo: [],
+        halfFrom: [],
+        noDamageTo: [],
+        noDamageFrom: [],
+    });
     // Fetch random Pokémon
     useEffect(() => {
         const fetchRandomPokemon = async () => {
@@ -36,27 +43,67 @@ function TypeQuiz() {
     // Initialize
     useEffect(() => {
         if (pokemon) {
-            const newTypes = arrayOfSelectedPokemonTypes(pokemon.type);
-            setTypes(newTypes);
-            setCurrentType(newTypes[0]);
-            console.log("UseEffect => New Types: ", newTypes);
-            console.log("UseEffect => Current Type: ", newTypes[0]);
-            if (newTypes.length > 0) {
-                const newDamageSelections = {};
-                newTypes.forEach((type) => {
-                    newDamageSelections[type] = {
-                        doubleTo: [],
-                        doubleFrom: [],
-                        halfTo: [],
-                        halfFrom: [],
-                        noDamageTo: [],
-                        noDamageFrom: [],
-                    };
-                });
-                setDamageSelections(newDamageSelections);
-                console.log("UseEffect => Initial Damage Selections: ", newDamageSelections);
+            let newTypes = arrayOfSelectedPokemonTypes(pokemon.type);
+            const initializeDamageSelections = (newTypes) => {
+                setTypes(newTypes);
+                setCurrentType(newTypes[0]);
+                console.log("UseEffect => Types Array: ", newTypes);
+                console.log("UseEffect => Current Type: ", newTypes[0]);
+                if (newTypes.length > 0) {
+                    const newDamageSelections = {};
+                    newTypes.forEach((type) => {
+                        newDamageSelections[type] = {
+                            doubleTo: [],
+                            doubleFrom: [],
+                            halfTo: [],
+                            halfFrom: [],
+                            noDamageTo: [],
+                            noDamageFrom: [],
+                        };
+                    });
+                    setDamageSelections(newDamageSelections);
+                    console.log("UseEffect => Initial Damage Selections: ", newDamageSelections);
+                }
             }
-        }
+
+            const getCorrectTypeAdvantage = async (type) => {
+                try {
+                    type = type.toLowerCase();
+                    const response = await axios.get(`http://localhost:5000/pokemon/damage_relations/${type}`);
+                    return response.data;
+                } catch (error) {
+                    console.error('Error fetching correct type advantage and weakness data:', error);
+                }
+            };
+            const initializeCorrectTypeAdvantage = async (newTypes) => {
+                if (newTypes.length === 1) {
+                    const type = await getCorrectTypeAdvantage(newTypes[0]);
+                    console.log("id: ", type.id);
+                    console.log("name: ", type.name);
+                    console.log("damage_relations: ", type.damage_relations);
+                    setCorrectTypeAdvantage1(type.damage_relations);
+                } else if (newTypes.length === 2) {
+                    const [firstType, secondType] = await Promise.all([
+                        getCorrectTypeAdvantage(newTypes[0]),
+                        getCorrectTypeAdvantage(newTypes[1])
+                    ]);
+
+                    console.log("First Type - id:", firstType.id);
+                    console.log("First Type - name:", firstType.name);
+                    console.log("First Type - damage_relations:", firstType.damage_relations);
+
+                    console.log("Second Type - id:", secondType.id);
+                    console.log("Second Type - name:", secondType.name);
+                    console.log("Second Type - damage_relations:", secondType.damage_relations);
+
+                    setCorrectTypeAdvantage1(firstType.damage_relations);
+                    setCorrectTypeAdvantage2(secondType.damage_relations);
+                }
+            };
+            initializeDamageSelections(newTypes);
+            // getCorrectTypeAdvantage(newTypes[0]);
+            initializeCorrectTypeAdvantage(newTypes);
+        };
     }, [pokemon]);
     // Functions to update user selected type advantage and weakness data
     const updateTypeSelection = (damageSelections) => {

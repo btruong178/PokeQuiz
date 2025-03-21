@@ -7,17 +7,21 @@ router.get('/random_pokemon', async (req, res) => {
         const result = await pool.query('SELECT * FROM pokemon ORDER BY RANDOM() LIMIT 1');
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Database query error (/random_pokemon):', err);
+        console.error('Database query error (pokemon/random_pokemon):', err);
         res.status(500).json({ error: 'Database error', details: err.message });
     }
 });
 
-router.get('/damage_relations', async (req, res) => {
+router.get('/damage_relations/:typeName', async (req, res) => {
     try {
-        const result = await pool.query('SELECT id, name FROM types');
-        res.json(result.rows);
+        const { typeName } = req.params;
+        const result = await pool.query('SELECT * FROM types WHERE LOWER(name) = LOWER($1)', [typeName]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ errorMessage: 'Type not found' });
+        }
+        res.json(result.rows[0]);
     } catch (err) {
-        console.error('Database query error (/damage_relations):', err);
+        console.error('Database query error (pokemon/damage_relations/:typeName):', err);
         res.status(500).json({ error: 'Database error', details: err.message });
     }
 })
