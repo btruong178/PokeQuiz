@@ -12,22 +12,11 @@ function TypeQuiz() {
     const [currentType, setCurrentType] = useState(null);
     const [damageSelections, setDamageSelections] = useState({});
     // Correct type advantage and weakness data
-    const [correctTypeAdvantage1, setCorrectTypeAdvantage1] = useState({
-        doubleTo: [],
-        doubleFrom: [],
-        halfTo: [],
-        halfFrom: [],
-        noDamageTo: [],
-        noDamageFrom: [],
-    });
-    const [correctTypeAdvantage2, setCorrectTypeAdvantage2] = useState({
-        doubleTo: [],
-        doubleFrom: [],
-        halfTo: [],
-        halfFrom: [],
-        noDamageTo: [],
-        noDamageFrom: [],
-    });
+    const [correctTypeAdvantage, setCorrectTypeAdvantage] = useState({});
+    // Log the correct type advantage and weakness data
+    useEffect(() => {
+        console.log("Correct Type Advantage: ", correctTypeAdvantage);
+    }, [correctTypeAdvantage]);
     // Fetch random Pokémon
     useEffect(() => {
         const fetchRandomPokemon = async () => {
@@ -40,7 +29,7 @@ function TypeQuiz() {
         };
         fetchRandomPokemon();
     }, []);
-    // Initialize
+    // Initialize user selections and advantage/weakness data
     useEffect(() => {
         if (pokemon) {
             let newTypes = arrayOfSelectedPokemonTypes(pokemon.type);
@@ -78,30 +67,16 @@ function TypeQuiz() {
             const initializeCorrectTypeAdvantage = async (newTypes) => {
                 if (newTypes.length === 1) {
                     const type = await getCorrectTypeAdvantage(newTypes[0]);
-                    console.log("id: ", type.id);
-                    console.log("name: ", type.name);
-                    console.log("damage_relations: ", type.damage_relations);
-                    setCorrectTypeAdvantage1(type.damage_relations);
+                    setCorrectTypeAdvantage({ [type.name]: type.damage_relations });
                 } else if (newTypes.length === 2) {
                     const [firstType, secondType] = await Promise.all([
                         getCorrectTypeAdvantage(newTypes[0]),
                         getCorrectTypeAdvantage(newTypes[1])
                     ]);
-
-                    console.log("First Type - id:", firstType.id);
-                    console.log("First Type - name:", firstType.name);
-                    console.log("First Type - damage_relations:", firstType.damage_relations);
-
-                    console.log("Second Type - id:", secondType.id);
-                    console.log("Second Type - name:", secondType.name);
-                    console.log("Second Type - damage_relations:", secondType.damage_relations);
-
-                    setCorrectTypeAdvantage1(firstType.damage_relations);
-                    setCorrectTypeAdvantage2(secondType.damage_relations);
+                    setCorrectTypeAdvantage({ [firstType.name]: firstType.damage_relations, [secondType.name]: secondType.damage_relations });
                 }
             };
             initializeDamageSelections(newTypes);
-            // getCorrectTypeAdvantage(newTypes[0]);
             initializeCorrectTypeAdvantage(newTypes);
         };
     }, [pokemon]);
@@ -140,7 +115,7 @@ function TypeQuiz() {
                     <TypeToggle types={types} currentType={currentType} onTypeToggle={updateCurrentType} ></TypeToggle>
                     <DamageSelector onDamageSelect={updateDamageSelection}></DamageSelector>
                     <Types onTypeSelect={updateTypeSelection} damageSelections={damageSelections} currentDamage={damage}
-                        currentType={currentType}></Types>
+                        currentType={currentType} correctTypeAdvantage={correctTypeAdvantage}></Types>
 
 
                 </div>

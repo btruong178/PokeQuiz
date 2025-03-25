@@ -30,7 +30,7 @@ const availableTypes = [
 ];
 
 
-function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
+function Types({ onTypeSelect, damageSelections, currentDamage, currentType, correctTypeAdvantage }) {
     const [selectedTypes, setSelectedTypes] = useState([]);
 
     useEffect(() => {
@@ -50,9 +50,19 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
         onTypeSelect(damageSelections);
     };
 
+
+
     return (
         <div className="type-selector">
-            <h3>Pick the Correct Types!</h3>
+            <div className="type-header">
+                <h3>Pick the Correct Types!</h3>
+                <div className="type-header-buttons">
+                    <button className="reset-button">Reset</button>
+                    <button className="reset-all-button">Reset All</button>
+                </div>
+            </div>
+
+
             <div className="button-group">
                 {availableTypes.map((type) => (
                     <button
@@ -63,10 +73,35 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType }) {
                         {type}
                     </button>
                 ))}
+
             </div>
+            <SubmitButton correctTypeAdvantage={correctTypeAdvantage} damageSelections={damageSelections}></SubmitButton>
         </div>
     );
 }
+
+function SubmitButton({ correctTypeAdvantage, damageSelections }) {
+    const submitButton = () => {
+        let correct = correctTypeAdvantage;
+        let selected = damageSelections;
+        console.log("Correct Type Advantage: ", correct);
+        console.log("Selected Type Advantage: ", selected);
+        checkCorrectness({ correct, selected });
+    };
+    const checkCorrectness = ({ correct, selected }) => {
+        alert("Checking Correctness");
+        if (Object.keys(correct).length === 1) {
+            // Single Type Check
+        } else if (Object.keys(correct).length === 2) {
+            // Double Type Check
+        }
+    }
+
+    return (
+        <button className="submit-button" onClick={() => submitButton()}>Submit</button>
+    )
+}
+
 function TypeToggle({ types, currentType, onTypeToggle }) {
     // Use local state for selected type and initialize it with the prop.
     const [selectedType, setSelectedType] = useState(currentType);
