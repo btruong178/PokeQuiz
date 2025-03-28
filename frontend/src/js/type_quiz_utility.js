@@ -81,6 +81,7 @@ function Types({ onTypeSelect, damageSelections, currentDamage, currentType, cor
 }
 
 function SubmitButton({ correctTypeAdvantage, damageSelections }) {
+    // Handle submit button click
     const submitButton = () => {
         let correct = correctTypeAdvantage;
         let selected = damageSelections;
@@ -88,14 +89,32 @@ function SubmitButton({ correctTypeAdvantage, damageSelections }) {
         console.log("Selected Type Advantage: ", selected);
         checkCorrectness({ correct, selected });
     };
+    // Check if the selected types are correct
     const checkCorrectness = ({ correct, selected }) => {
-        alert("Checking Correctness");
-        if (Object.keys(correct).length === 1) {
-            // Single Type Check
-        } else if (Object.keys(correct).length === 2) {
-            // Double Type Check
+        console.log("Checking Correctness");
+        const wrongAnswersObject = {};
+
+        Object.keys(correct).forEach((key) => {
+            wrongAnswersObject[key] = {
+                missing: {},
+                incorrect: {}
+            };
+            Object.keys(correct[key]).forEach((relation) => {
+                // Initialize empty array or maybe filter between correct and selected?
+                wrongAnswersObject[key].missing[relation] = [];
+                wrongAnswersObject[key].incorrect[relation] = [];
+            });
+        });
+        console.log("Wrong Answers Object: ", wrongAnswersObject);
+        for (let i = 0; i < Object.keys(correct).length; i++) {
+            const [typeNameCorrect, typeArrayCorrect] = Object.entries(correct)[i];
+            const [typeNameSelected, typeArraySelected] = Object.entries(selected)[i];
+            console.log(typeNameCorrect, "Correct:", typeArrayCorrect);
+            console.log(typeNameSelected, "Selected:", typeArraySelected);
         }
     }
+
+
 
     return (
         <button className="submit-button" onClick={() => submitButton()}>Submit</button>
